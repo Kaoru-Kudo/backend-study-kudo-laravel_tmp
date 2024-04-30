@@ -22,12 +22,16 @@ class ExampleFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'company' => 'required|string|max:30',
             'name' => ['required', 'string', 'max:30'],
-            'name_kana' => ['required', 'string', 'max:30', 'regex:/^[ァ-ロワンヴー]*$/u'],
+            'kana_name' => ['required', 'string', 'max:30', 'regex:/^[ァ-ロワンヴー]*$/u'],
+            'sex_id' => ['required'],
+            'birthday_year' => ['required'],
+            'birthday_month' => ['required'],
+            'birthday_day' => ['required'],
             'phone' => ['nullable', 'regex:/^0(\\d-?\\d{4}|\\d{2}-?\\d{3}|\\d{3}-?\\d{2}|\\d{4}-?\\d|\\d0-?\\d{4})-?\\d{4}$/'],
-            'email' => ['required', 'email', 'max:254', 'confirmed'],
-            'email_confirmation' => ['required', 'email', 'max:254'],
+            'job_prefecture_id' => ['required'],
+            'job_type_id' => ['required'],
+            'email' => ['required', 'email', 'max:254'],
             'body' => ['required', 'string', 'max:5000'],
         ];
     }
@@ -41,7 +45,7 @@ class ExampleFormRequest extends FormRequest
         return [
             'company' => '会社名',
             'name' => '名前',
-            'name_kana' => 'フリガナ',
+            'kana_name' => 'フリガナ',
             'phone' => '電話番号',
             'email' => 'メールアドレス',
             'email_confirmation' => 'メールアドレスの確認',

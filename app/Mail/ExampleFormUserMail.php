@@ -26,8 +26,8 @@ class ExampleFormUserMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        $from = new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-        $subject = '【'.env('APP_NAME').'】お問い合せありがとうございます';
+        $from = new Address(env('MAIL_FROM_ADDRESS', 'kaoru_kudo@012grp.co.jp'), env('MAIL_FROM_NAME', 'kaoru_kudo@012grp.co.jp'));
+        $subject = '【'.config('app.name').'】お問い合せありがとうございます';
 
         return new Envelope(
             from: $from,

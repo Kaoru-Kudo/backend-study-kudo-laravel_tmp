@@ -11,15 +11,22 @@ class ExampleFormController extends Controller
 {
     public function index()
     {
+        $prefs = config('prefectures');
+        $years = config('years');
+        $months = config('months');
+        $days = config('days');
+        $jobTypes = config('jobTypes');
+
         $data = collect(request()->session()->get('data'));
         request()->session()->forget('data');
 
-        return view('example_form.index', compact('data'));
+        return view('example_form.index', compact('data', 'years', 'months', 'days', 'prefs', 'jobTypes'));
     }
 
     public function confirm(ExampleFormRequest $request)
     {
         $data = $request->validated();
+        // dd($data);
         $request->session()->put('data', $data);
 
         return view('example_form.confirm', compact('data'));

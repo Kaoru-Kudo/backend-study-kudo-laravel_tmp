@@ -4,33 +4,49 @@
 @section('content')
 
 <section>
-    <div>
-        <label for="company">会社名</label>
-        {{ $data['company'] }}
-    </div>
 
     <div>
-        <label for="name">お名前</label>
+        <label>お名前</label>
         {{ $data['name'] }}
     </div>
 
     <div>
-        <label for="name_kana">フリガナ</label>
-        {{ $data['name_kana'] }}
+        <label>フリガナ</label>
+        {{ $data['kana_name'] }}
     </div>
 
     <div>
-        <label for="phone">電話番号</label>
-        {{ $data['phone'] }}
+        <label>性別</label>
+        {{ $data['sex_id'] }}
     </div>
 
     <div>
-        <label for="email">メールアドレス</label>
+        <label>生年月日</label>
+        {{ $data['birthday_year'] }}年{{ $data['birthday_month'] }}月{{ $data['birthday_day'] }}日
+    </div>
+    
+    <div>
+        <label>メールアドレス</label>
         {{ $data['email'] }}
     </div>
 
     <div>
-        <label for="body">お問い合わせ内容</label>
+        <label>電話番号</label>
+        {{ $data['phone'] }}
+    </div>
+
+    <div>
+        <label>希望勤務地</label>
+        {{ $data['job_prefecture_id'] }}
+    </div>
+
+    <div>
+        <label>希望職種</label>
+        {{ $data['job_type_id'] }}
+    </div>
+
+    <div>
+        <label>お問い合わせ内容</label>
         {{ $data['body'] }}
     </div>
 

@@ -27,7 +27,7 @@ class ExampleFormAdminMail extends Mailable
     public function envelope(): Envelope
     {
         $from = new Address($this->form_data['email'], $this->form_data['name']);
-        $subject = '【'.env('APP_NAME').'】お問い合せがありました';
+        $subject = '【'.config('app.name').'】お問い合せがありました';
 
         return new Envelope(
             from: $from,

@@ -6,6 +6,7 @@ use App\Http\Requests\ExampleFormRequest;
 use App\Mail\ExampleFormAdminMail;
 use App\Mail\ExampleFormUserMail;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Entries; 
 
 class ExampleFormController extends Controller
 {
@@ -42,6 +43,21 @@ class ExampleFormController extends Controller
 
         Mail::to($adminEmail)->send(new ExampleFormAdminMail($data));
         Mail::to($userEmail)->send(new ExampleFormUserMail($data));
+
+        $birthday = $data['birthday_year'] . '-' . $data['birthday_month'] . '-' . $data['birthday_day'];
+        $birthday = date('Y-m-d', strtotime($birthday));
+
+        $form = new Entries();
+        $form->name      = $data['name'];
+        $form->kana_name = $data['kana_name'];
+        $form->sex_id = $data['sex_id'];
+        $form->birthday = $birthday;
+        $form->email     = $data['email'];
+        $form->phone     = $data['phone'];
+        $form->job_prefecture_id     = $data['job_prefecture_id'];
+        $form->job_type_id     = $data['job_type_id'];
+        $form->body      = $data['body'];
+        $form->save();
 
         return view('example_form.thanks');
     }

@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Entries extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'kana_name',
+        'sex_id',
+        'birthday',
+        'email',
+        'phone',
+        'job_prefecture_id',
+        'job_type_id',
+        'body',
+        '_token',
+    ];
 }

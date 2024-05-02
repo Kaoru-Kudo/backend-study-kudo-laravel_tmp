@@ -4,13 +4,37 @@
 @section('content')
 <section>
     <p>
-        {{\Illuminate\Support\Facades\Auth::user()->name}}でログインしています。
+        {{ \Illuminate\Support\Facades\Auth::user()->name ?? 'ゲスト' }}でログインしています。
     </p>
 
-    <form action="{{route('user.logout')}}" method="post">
+    <form action="{{ route('user.logout') }}" method="post">
         @csrf
         <button>ログアウト</button>
     </form>
+
+    <form action="{{ route('admin.index') }}" method="get">
+        <label>キーワード</label>
+        <input type="text" name="keywords" placeholder="名前・フリガナ検索" value="{{ request()->keywords ?? '' }}" >
+        <label>希望勤務地</label>
+        <select class="form_wish_box" name="job_prefecture_id" data-trigger-selectbox="select">
+            <option value="">選択してください</option>
+            @foreach($prefs as $key => $pref)
+                <option value="{{ $key }}" {{ ($key === (int) old('job_prefecture_id') || $key === (int) ($data->get('job_prefecture_id') ?? 0)) ? 'selected' : '' }}>{{ $pref }}</option>
+            @endforeach
+        </select>
+        <label>希望職種</label>
+        <select class="form_wish_box" name="job_type_id" data-trigger-selectbox="select">
+            <option value="">選択してください</option>
+            @foreach($jobTypes as $key => $item)
+                <option value="{{ $key }}" {{ ($key === (int) old('job_type_id') || $key === (int) ($data->get('job_type_id') ?? 0)) ? 'selected' : '' }}>{{ $item }}</option>
+            @endforeach
+        </select>
+        <button type="submit">検索</button>
+    </form>
+
+    <div class="entries-info">
+        <p>表示中: {{ $entries->firstItem() ?? '0' }} - {{ $entries->lastItem() ?? '0' }} 件 / 全 {{ $entries->total() ?? '0' }} 件</p>
+    </div>
 
     <table>
         <thead>
@@ -21,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($entries as $entry)
+            @forelse ($entries as $entry)
             <tr>
                 <td>{{ $entry['id'] }}</td>
                 <td>{{ $entry['name'] }}</td>
@@ -36,8 +60,14 @@
                     </form>
                 </div></td>
             </tr>
-            @endforeach
+            @empty
+            <tr>
+                <td colspan="6">データがありません。</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
+    {{$entries->appends(request()->query())->links('vendor.pagination.bootstrap-4')}}
+
 </section>
 @endsection

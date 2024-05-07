@@ -13,5 +13,11 @@
         <input type="password" name="password" id="password">
         <button type="submit">送信</button>
     </form>
+    @error('email')
+        <p>{{ $message }}</p>
+    @enderror
+    @error('password')
+        <p>{{ $message }}</p>
+    @enderror
 </section>
 @endsection

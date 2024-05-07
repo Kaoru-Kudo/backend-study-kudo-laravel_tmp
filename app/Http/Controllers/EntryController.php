@@ -15,13 +15,9 @@ class EntryController extends Controller
         $prefs = config('prefectures');
         $jobTypes = config('jobTypes');
 
-        if (auth()->check()) {
-            $entries = Entry::search($request)->paginate(5);
+        $entries = Entry::search($request)->paginate(5);
 
-            return view('admin.index', compact('request', 'entries', 'prefs', 'jobTypes'));
-        } else {
-            return redirect('/login');
-        }
+        return view('admin.index', compact('entries', 'prefs', 'jobTypes'));
     }
 
     /**

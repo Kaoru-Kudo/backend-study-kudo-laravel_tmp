@@ -7,7 +7,7 @@
         {{ \Illuminate\Support\Facades\Auth::user()->name ?? 'ゲスト' }}でログインしています。
     </p>
 
-    <form action="{{ route('user.logout') }}" method="post">
+    <form action="{{ route('logout') }}" method="post">
         @csrf
         <button>ログアウト</button>
     </form>

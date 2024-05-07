@@ -12,7 +12,7 @@
         <button>ログアウト</button>
     </form>
 
-    <form action="{{ route('admin.index') }}" method="get">
+    <form action="{{ route('admin.entries.index') }}" method="get">
         <label>キーワード</label>
         <input type="text" name="keywords" placeholder="名前・フリガナ検索" value="{{ request()->keywords ?? '' }}" >
         <label>希望勤務地</label>
@@ -50,10 +50,10 @@
                 <td>{{ $entry['id'] }}</td>
                 <td>{{ $entry['name'] }}</td>
                 <td>{{ $entry['kana_name'] }}</td>
-                <td><a href="{{ url('admin/detail/' . $entry['id']) }}">詳細</a></td>
-                <td><a href="{{ url('admin/edit/' . $entry['id']) }}">編集</a></td>
+                <td><a href="{{ route('admin.entries.show', $entry['id']) }}">詳細</a></td>
+                <td><a href="{{ route('admin.entries.edit', $entry['id']) }}">編集</a></td>
                 <td><div class="col-sm">
-                    <form action="{{ url('admin/' . $entry['id']) }}" method="post">
+                    <form action="{{ route('admin.entries.destroy', $entry['id']) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('削除してもよろしいですか？');">Delete</button>

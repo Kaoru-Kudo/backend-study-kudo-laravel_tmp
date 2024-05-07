@@ -12,41 +12,13 @@ class EntryController extends Controller
      */
     public function index(Request $request)
     {
-        $data = $request;
-
-        $keywords = $data->input('keywords');
-        $jobPrefectureId = $data->input('job_prefecture_id');
-        $jobTypeId = $data->input('job_type_id');
-
         $prefs = config('prefectures');
         $jobTypes = config('jobTypes');
 
         if (auth()->check()) {
-            $query = Entry::query();
+            $entries = Entry::search($request)->paginate(5);
 
-            if (!empty($keywords)) {
-                $search_split = mb_convert_kana($keywords, 's');
-                $search_split2 = preg_split('/[\s]+/', $search_split);
-
-                foreach ($search_split2 as $value) {
-                    $query->where(function($query) use ($value) {
-                        $query->where('name', 'LIKE', "%{$value}%")
-                            ->orWhere('kana_name', 'LIKE', "%{$value}%");
-                    });
-                }
-            }
-
-            if(!empty($jobPrefectureId)) {
-            $query->where('job_prefecture_id', 'LIKE', $jobPrefectureId);
-            }
-
-            if(!empty($jobTypeId)) {
-                $query->where('job_type_id', 'LIKE', $jobTypeId);
-            }
-
-            $entries = $query->paginate(5);
-
-            return view('admin.index', compact('data', 'entries', 'prefs', 'jobTypes'));
+            return view('admin.index', compact('request', 'entries', 'prefs', 'jobTypes'));
         } else {
             return redirect('/login');
         }

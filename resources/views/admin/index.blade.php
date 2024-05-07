@@ -14,19 +14,19 @@
 
     <form action="{{ route('admin.entries.index') }}" method="get">
         <label>キーワード</label>
-        <input type="text" name="keywords" placeholder="名前・フリガナ検索" value="{{ request()->keywords ?? '' }}" >
+        <input type="text" name="keyword" placeholder="名前・フリガナ検索" value="{{ request()->keyword ?? '' }}" >
         <label>希望勤務地</label>
         <select class="form_wish_box" name="job_prefecture_id" data-trigger-selectbox="select">
             <option value="">選択してください</option>
             @foreach($prefs as $key => $pref)
-                <option value="{{ $key }}" {{ ($key === (int) old('job_prefecture_id') || $key === (int) ($data->get('job_prefecture_id') ?? 0)) ? 'selected' : '' }}>{{ $pref }}</option>
+                <option value="{{ $key }}" {{ ($key === (int) old('job_prefecture_id') || $key === (int) (request()->get('job_prefecture_id') ?? 0)) ? 'selected' : '' }}>{{ $pref }}</option>
             @endforeach
         </select>
         <label>希望職種</label>
         <select class="form_wish_box" name="job_type_id" data-trigger-selectbox="select">
             <option value="">選択してください</option>
             @foreach($jobTypes as $key => $item)
-                <option value="{{ $key }}" {{ ($key === (int) old('job_type_id') || $key === (int) ($data->get('job_type_id') ?? 0)) ? 'selected' : '' }}>{{ $item }}</option>
+                <option value="{{ $key }}" {{ ($key === (int) old('job_type_id') || $key === (int) (request()->get('job_type_id') ?? 0)) ? 'selected' : '' }}>{{ $item }}</option>
             @endforeach
         </select>
         <button type="submit">検索</button>

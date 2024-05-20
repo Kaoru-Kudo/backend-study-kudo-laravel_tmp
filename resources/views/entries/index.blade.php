@@ -4,24 +4,15 @@
 @section('content')
 
 <section>
-    @if($errors->any())
-    <div>
-        <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-    <form action="{{ route('example_form.confirm') }}" method="POST">
+    <form action="{{ route('entries.confirm') }}" method="POST">
         @csrf
 
         <div>
             <label for="name">お名前<span>必須</span></label>
             <input id="name" type="text" name="name" value="{{ $data->get('name') ?? old('name') }}">
-            @if($errors->has('name'))
-            <p>{{ $errors->first('name') }}</p>
-            @endif
+            @error('name')
+            <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
@@ -54,6 +45,9 @@
                         <option value="{{ $key }}" {{ $key === (int) old('birthday_year') || $key === (int) $data->get('birthday_year') ? 'selected' : '' }}>{{ $year }}</option>
                     @endforeach
                 </select>
+                @error('birthday_year')
+                <p>{{ $message }}</p>
+                @enderror
             </div>  
             <div class="form_birth01">
                 <select class="form_birth_box" name="birthday_month" data-trigger-selectbox="select">
@@ -62,6 +56,9 @@
                         <option value="{{ $key }}" {{ $key === (int) old('birthday_month') || $key === (int) $data->get('birthday_month') ? 'selected' : '' }}>{{ $month }}</option>
                     @endforeach
                 </select>
+                @error('birthday_month')
+                <p>{{ $message }}</p>
+                @enderror
             </div>
             <div class="form_birth01">
                 <select class="form_birth_box" name="birthday_day" data-trigger-selectbox="select">
@@ -70,18 +67,18 @@
                         <option value="{{ $key }}" {{ $key === (int) old('birthday_day') || $key === (int) $data->get('birthday_day') ? 'selected' : '' }}>{{ $day }}</option>
                     @endforeach
                 </select>
+                @error('birthday_day')
+                <p>{{ $message }}</p>
+                @enderror
             </div>
-            @error('birthday_year')
-            <p>{{ $message }}</p>
-            @enderror
         </div>
         
         <div>
             <label for="email">メールアドレス<span>必須</span></label>
             <input id="email" type="text" name="email" value="{{ $data->get('email') ?? old('email') }}">
-            @if($errors->has('email'))
-            <p>{{ $errors->first('email') }}</p>
-            @endif
+            @error('email')
+            <p>{{ $message }}</p>
+            @enderror
         </div>
         
         <div>
@@ -115,9 +112,9 @@
         <div>
             <label for="body">お問い合わせ内容<span>必須</span></label>
             <textarea id="body" type="text" name="body">{{ $data->get('body') ?? old('body') }}</textarea>
-            @if($errors->has('body'))
-            <p>{{ $errors->first('body') }}</p>
-            @endif
+            @error('body')
+            <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <div>

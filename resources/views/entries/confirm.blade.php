@@ -22,7 +22,7 @@
 
     <div>
         <label>生年月日</label>
-        {{ $data['birthday_year'] }}年{{ $data['birthday_month'] }}月{{ $data['birthday_day'] }}日
+        {{ sprintf('%d年%d月%d日', $data['birthday_year'], $data['birthday_month'], $data['birthday_day']) }}
     </div>
     
     <div>
@@ -51,13 +51,13 @@
     </div>
 
     <div>
-        <form action="{{ route('example_form.index') }}" method="POST">
+        <form action="{{ route('entries.index') }}" method="POST">
             @csrf
             
             <button type="submit" name="submitBtnVal" value="戻る">戻る</button>
         </form>
 
-        <form action="{{ route('example_form.thanks') }}" method="POST">
+        <form action="{{ route('entries.thanks') }}" method="POST">
             @csrf
             <button type="submit" name="submitBtnVal" value="complete">送信</button>
         </form>

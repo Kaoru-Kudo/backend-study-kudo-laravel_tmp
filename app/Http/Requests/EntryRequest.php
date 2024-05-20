@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExampleFormRequest extends FormRequest
+class EntryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class ExampleFormRequest extends FormRequest
             'birthday_year' => ['required'],
             'birthday_month' => ['required'],
             'birthday_day' => ['required'],
-            'phone' => ['nullable', 'regex:/^0(\\d-?\\d{4}|\\d{2}-?\\d{3}|\\d{3}-?\\d{2}|\\d{4}-?\\d|\\d0-?\\d{4})-?\\d{4}$/'],
+            'phone' => ['required', 'regex:/^0(\\d-?\\d{4}|\\d{2}-?\\d{3}|\\d{3}-?\\d{2}|\\d{4}-?\\d|\\d0-?\\d{4})-?\\d{4}$/'],
             'job_prefecture_id' => ['required'],
             'job_type_id' => ['required'],
             'email' => ['required', 'email', 'max:254'],
@@ -43,14 +43,17 @@ class ExampleFormRequest extends FormRequest
     {
         //
         return [
-            'company' => '会社名',
             'name' => '名前',
             'kana_name' => 'フリガナ',
+            'sex_id' => '性別',
+            'birthday_year' => '生年月日（年）',
+            'birthday_month' => '生年月日（月）',
+            'birthday_day' => '生年月日（日）',
             'phone' => '電話番号',
+            'job_prefecture_id' => '希望勤務地',
+            'job_type_id' => '希望職種',
             'email' => 'メールアドレス',
-            'email_confirmation' => 'メールアドレスの確認',
             'body' => 'お問い合わせ内容',
-
         ];
     }
 
@@ -61,7 +64,7 @@ class ExampleFormRequest extends FormRequest
     {
         //
         return [
-            'phone.regex' => ':attributeが正しくありません。',
+            // 'phone.regex' => ':attributeが正しくありません。',
         ];
     }
 }

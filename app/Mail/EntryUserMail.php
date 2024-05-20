@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ExampleFormUserMail extends Mailable
+class EntryUserMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -41,7 +41,7 @@ class ExampleFormUserMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: 'emails.example_form.user', // プレーンテキストで送信
+            text: 'emails.entries.user', // プレーンテキストで送信
         );
     }
 

@@ -2,77 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EntryRequest;
+use App\Mail\EntryAdminMail;
+use App\Mail\EntryUserMail;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Entry;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class EntryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    public function index()
     {
-        $prefs = config('prefectures');
-        $jobTypes = config('jobTypes');
-
-        $entries = Entry::search($request)->paginate(5);
-
-        return view('admin.index', compact('entries', 'prefs', 'jobTypes'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $entry = Entry::find($id);
-        
-		return view("admin.detail", compact('entry'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $entry = Entry::find($id);
-        
         $prefs = config('prefectures');
         $years = config('years');
         $months = config('months');
         $days = config('days');
         $jobTypes = config('jobTypes');
 
-        $data = 
-        list($birthday_year, $birthday_month, $birthday_day) = explode('-', $entry->birthday);
-        $data = [
-            'birthday_year' => $birthday_year,
-            'birthday_month' => $birthday_month,
-            'birthday_day' => $birthday_day
-        ];
+        $data = collect(request()->session()->get('data'));
+        request()->session()->forget('data');
 
-        return view("admin.edit", compact('entry', 'data', 'years', 'months', 'days', 'prefs', 'jobTypes'));
+        return view('entries.index', compact('data', 'years', 'months', 'days', 'prefs', 'jobTypes'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function confirm(EntryRequest $request)
     {
-        $request->validated();
-        $entry = Entry::find($id);
-        $entry->update($request->except(['_token']));
+        $data = $request->validated();
+        $request->session()->put('data', $data);
 
-        return redirect()->route('admin.entries.index')->with('success', '更新しました');
+        return view('entries.confirm', compact('data'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function thanks()
     {
-        $entry = Entry::find($id);
-        $entry->delete();
-        return redirect()->route('admin.entries.index')->with('success', '削除しました');
+        $data = request()->session()->get('data');
+        request()->session()->forget('data');
+
+        $adminEmail = config('mail.from.address');
+        $userEmail = $data['email'];
+
+        Mail::to($adminEmail)->send(new EntryAdminMail($data));
+        Mail::to($userEmail)->send(new EntryUserMail($data));
+
+        $data['birthday'] = Carbon::parse($data['birthday_year'] . '-' . $data['birthday_month'] . '-' . $data['birthday_day'])->format('Y-m-d');
+
+        Entry::create($data);
+
+        return view('entries.thanks');
     }
 }

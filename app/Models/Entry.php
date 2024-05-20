@@ -24,12 +24,19 @@ class Entry extends Model
         '_token',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = ['birthday' => 'date'];
+
     public function scopeSearch (Builder $query, Request $request)
     {
         $keyword = $request->input('keyword');
         $jobPrefectureId = $request->input('job_prefecture_id');
         $jobTypeId = $request->input('job_type_id');
-        
+
         return $query
                 ->when(!empty($keyword), function ($q) use ($keyword) {
                     $keywords = collect(preg_split('/[\s]+/', mb_convert_kana($keyword, 's')));

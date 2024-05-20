@@ -1,19 +1,19 @@
 <?php
 
+use App\Http\Controllers\Admin\EntryController as AdminEntryController;
 use App\Http\Controllers\EntryController;
-use App\Http\Controllers\ExampleFormController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
-Route::match(['get', 'post'], '/example_form', [ExampleFormController::class, 'index'])->name('example_form.index');
-Route::match(['get', 'post'], '/example_form/confirm', [ExampleFormController::class, 'confirm'])->name('example_form.confirm');
-Route::post('/example_form/thanks', [ExampleFormController::class, 'thanks'])->name('example_form.thanks');
+Route::match(['get', 'post'], '/entries', [EntryController::class, 'index'])->name('entries.index');
+Route::match(['get', 'post'], '/entries/confirm', [EntryController::class, 'confirm'])->name('entries.confirm');
+Route::post('/entries/thanks', [EntryController::class, 'thanks'])->name('entries.thanks');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::prefix('admin')->as('admin.')->group(function () {
-        Route::resources(['entries' => EntryController::class], ['except' => ['create', 'store']]);
+        Route::resources(['entries' => AdminEntryController::class], ['except' => ['create', 'store']]);
     });
 });
